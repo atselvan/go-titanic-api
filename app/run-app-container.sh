@@ -26,4 +26,4 @@ echo "[INFO] NAME    : $name"
 echo "[INFO] NETWORK : $network"
 echo "[INFO] PORT    : $port"
 
-docker run --name $name -d -p $port --network $network $image
+docker run --name $name -d -p $port -e DB_HOST=titanic-db -e DB_NAME=titanic -e DB_USER=postgres -e DB_PASSWORD=password --network $network $image

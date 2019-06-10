@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: titanic-db
+  labels:
+    app: titanic-app
+spec:
+  ports:
+    - port: 5423
+  selector:
+    app: titanic-app
+    db: postgres
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: titanic-db-pvc
+  labels:
+    app: titanic-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titanic-db
+  labels:
+    app: titanic-app
+spec:
+  selector:
+    matchLabels:
+      app: titanic-app
+      db: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: titanic-app
+        db: postgres
+    spec:
+      containers:
+      - image: postgres:9.6
+        name: titanic-db
+        env:
+        - name: POSTGRES_DB
+          value: titanic
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: titanic-db-password
+              key: password
+        ports:
+        - containerPort: 5423
+          name: titanic-db
+        volumeMounts:
+        - name: titanic-db-pv
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: titanic-db-pv
+        persistentVolumeClaim:
+          claimName: titanic-db-pvc
+

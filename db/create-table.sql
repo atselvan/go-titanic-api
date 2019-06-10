@@ -1,5 +1,7 @@
-CREATE TABLE passengers
-(
+CREATE EXTENSION pgcrypto;  
+
+CREATE TABLE passengers(
+  uuid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   survived boolean,
   pclass int,
   name varchar(100),
@@ -10,7 +12,7 @@ CREATE TABLE passengers
   fare float
 );
 
-COPY passengers
+COPY passengers(survived,pclass,name,sex,age,ssa,pca,fare)
 FROM '/tmp/titanic.csv'
 WITH (
   FORMAT CSV,

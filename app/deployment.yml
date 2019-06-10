@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: titanic-app
+  labels:
+    app: titanic-app
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      nodePort: 31110
+  selector:
+    app: titanic-app
+    tier: application
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: titanic-app-pvc
+  labels:
+    app: titanic-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titanic-app
+  labels:
+    app: titanic-app
+spec:
+  selector:
+    matchLabels:
+      app: titanic-app
+      tier: application
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: titanic-app
+        tier: application
+    spec:
+      containers:
+      - image: titanic-app
+        imagePullPolicy: IfNotPresent
+        name: titanic-app
+        env:
+        - name: DB_HOST
+          value: titanic-db
+        - name: DB_NAME
+          value: titanic
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: titanic-db-password
+              key: password
+        ports:
+        - containerPort: 8000
+          name: titanic-app
