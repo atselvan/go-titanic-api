@@ -1,0 +1,243 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "This documentation describes the API to manage passengers of Titanic",
+    "title": "Titanic Passengers API",
+    "contact": {
+      "name": "Allan Tony Selvan",
+      "email": "atselvan99@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    },
+    "version": "1.0.0"
+  },
+  "host": "localhost:8000",
+  "basePath": "/",
+  "paths": {
+    "/passenger": {
+      "put": {
+        "description": "summary: Add a passenger to the record",
+        "tags": [
+          "passenger"
+        ],
+        "operationId": "updatePassenger",
+        "responses": {}
+      },
+      "post": {
+        "description": "UUID should be valid else the request will return 400 Bad Request status",
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Returns passenger info",
+        "operationId": "addPassenger",
+        "parameters": [
+          {
+            "type": "boolean",
+            "description": "survival status of the passenger",
+            "name": "survived",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "class",
+            "name": "pclass",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "name",
+            "name": "name",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "sex",
+            "name": "sex",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "float",
+            "description": "age",
+            "name": "age",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "int",
+            "description": "ssa",
+            "name": "ssa",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "int",
+            "description": "pca",
+            "name": "pca",
+            "in": "body",
+            "required": true
+          },
+          {
+            "type": "float",
+            "description": "fare",
+            "name": "age",
+            "in": "fare",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/success"
+          },
+          "404": {
+            "$ref": "#/responses/notFound"
+          },
+          "500": {
+            "$ref": "#/responses/internalServerError"
+          }
+        }
+      }
+    },
+    "/passenger/{uuid}": {
+      "get": {
+        "description": "UUID should be valid else the request will return 400 Bad Request status",
+        "tags": [
+          "passenger"
+        ],
+        "summary": "Returns passenger info",
+        "operationId": "getPassenger",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "uuid of the passenger",
+            "name": "uuid",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/success"
+          },
+          "404": {
+            "$ref": "#/responses/notFound"
+          },
+          "500": {
+            "$ref": "#/responses/internalServerError"
+          }
+        }
+      },
+      "delete": {
+        "description": "summary: Delete a passenger to the record",
+        "tags": [
+          "passenger"
+        ],
+        "operationId": "deletePassenger",
+        "responses": {}
+      }
+    },
+    "/passengers": {
+      "get": {
+        "description": "summary: Returns info of all passengers\ndescription: Returns info of all passengers",
+        "tags": [
+          "passengers"
+        ],
+        "operationId": "getPassengers",
+        "responses": {}
+      }
+    }
+  },
+  "responses": {
+    "Message": {
+      "description": "Message represents the https status and message",
+      "headers": {
+        "message": {
+          "type": "string",
+          "description": "Details message explaining the request.\n\nrequired: true"
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of a request.\n\nrequired: true"
+        }
+      }
+    },
+    "badRequest": {
+      "description": "Bad Request",
+      "headers": {
+        "message": {
+          "type": "string",
+          "description": "Message explaining the status"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of a request"
+        }
+      }
+    },
+    "internalServerError": {
+      "description": "Internal Server Error",
+      "headers": {
+        "message": {
+          "type": "string",
+          "description": "Message explaining the error"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of a request"
+        }
+      }
+    },
+    "notFound": {
+      "description": "Not Found",
+      "headers": {
+        "message": {
+          "type": "string",
+          "description": "Message explaining the status"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of a request"
+        }
+      }
+    },
+    "success": {
+      "description": "Success",
+      "headers": {
+        "message": {
+          "type": "string",
+          "description": "Message explaining the status"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of a request"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": [
+        "[]"
+      ]
+    }
+  ]
+}

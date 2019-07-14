@@ -1,0 +1,10 @@
+{
+  "survived": true,
+  "pclass": "1",
+  "name": "Mr. Allan Selvan",
+  "sex": "male",
+  "Age": 26,
+  "ssa": 0,
+  "pca": 0,
+  "fare": 7.25
+}
